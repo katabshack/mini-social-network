@@ -44,6 +44,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 1. ROUTE DE RECHERCHE
+// GET /api/posts/search/monMotCle
+router.get("/search/:query", async (req, res) => {
+  const { query } = req.params;
+  try {
+    // On cherche les posts dont le "content" contient le mot "query"
+    // $regex : permet de chercher une partie du texte
+    // $options: 'i' : insensible à la casse (Majuscule/minuscule pareil)
+    const posts = await Post.find({
+      content: { $regex: query, $options: "i" },
+    }).populate("userId", "username profilePicture"); // On veut aussi les infos de l'auteur
+
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // 🆔 LIRE un post spécifique
 router.get("/:id", async (req, res) => {
   try {
@@ -62,6 +80,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // ❤️ LIKE / UNLIKE un post
+/*
 router.post("/:id/like", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -91,6 +110,40 @@ router.post("/:id/like", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+*/
+/*
+router.put("/:id/like", protect, async (req, res) => { // <--- PUT est le standard
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post.likes.includes(req.user.id)) {
+      await post.updateOne({ $push: { likes: req.user.id } });
+      res.status(200).json("The post has been liked"); // <--- ATTENTION ICI
+    } else {
+      await post.updateOne({ $pull: { likes: req.user.id } });
+      res.status(200).json("The post has been disliked");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+*/
+
+router.put("/:id/like", protect, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    
+    if (!post.likes.includes(req.user.id)) {
+      post.likes.push(req.user.id); // On ajoute l'ID
+    } else {
+      post.likes = post.likes.filter((id) => id.toString() !== req.user.id); // On retire
+    }
+    
+    await post.save(); // On sauvegarde
+    res.status(200).json(post.likes); // <--- ON RENVOIE LE TABLEAU À JOUR
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

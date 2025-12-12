@@ -37,6 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 // 📖 LIRE tous les commentaires d'un post
+/*
 router.get("/post/:postId", async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.postId })
@@ -49,7 +50,18 @@ router.get("/post/:postId", async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
+*/
 
+router.get("/post/:postId", async (req, res) => {
+  try {
+    const comments = await Comment.find({ postId: req.params.postId })
+      .populate("userId", "username profilePicture"); // <--- C'EST LA CLÉ !
+      
+    res.status(200).json(comments);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 // 🗑️ SUPPRIMER un commentaire (seul l'auteur peut supprimer)
 router.delete("/:id", async (req, res) => {
   try {
