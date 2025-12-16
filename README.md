@@ -14,7 +14,9 @@ A modern, responsive social media application built with the **MERN Stack** (Mon
 
 | Desktop View | Mobile View |
 |:---:|:---:|
-| ![Desktop](https://via.placeholder.com/600x300?text=Upload+Your+Desktop+Screenshot+Here) | ![Mobile](https://via.placeholder.com/300x500?text=Upload+Mobile+Screenshot) |
+| <img width="1249" height="961" alt="Capture d&#39;écran 2025-12-16 141516" src="https://github.com/user-attachments/assets/5e803004-3053-49cc-a961-2a755ddb97a3" />
+ | ![unnamed](https://github.com/user-attachments/assets/301776c0-8c79-4814-a8ca-647b3720b814)
+ |
 *(Note: Replace these placeholders with actual screenshots of your app)*
 
 ---
