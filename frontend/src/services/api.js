@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // On pointe vers ton backend (vérifie que ton backend tourne bien sur le port 5000)
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', 
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api', 
 });
 
 // Intercepteur : Ajoute automatiquement le token à chaque requête si on est connecté
